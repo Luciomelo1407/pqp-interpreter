@@ -5,12 +5,12 @@
 
 FILE *input;
 
-void initcpu(Cpu *cpu) {
+void initcpu(Cpu *cpu, char* outputPath) {
   cpu->e = false;
   cpu->l = false;
   cpu->g = false;
   cpu->pc = 0;
-  cpu->output = fopen("output.txt", "w+");
+  cpu->output = fopen(outputPath, "w+");
 }
 
 void loadMemory(char *inputPath, Cpu *cpu) {
