@@ -2,6 +2,7 @@
 #include "../instructions/instructions.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 FILE *input;
 
@@ -10,6 +11,9 @@ void initcpu(Cpu *cpu, char* outputPath) {
   cpu->l = false;
   cpu->g = false;
   cpu->pc = 0;
+  cpu->instructionsCounter = calloc(16, sizeof(int));
+  cpu->registers = calloc(16, sizeof(uint16_t));
+  cpu->mem = calloc(256, sizeof(uint8_t));
   cpu->output = fopen(outputPath, "w+");
 }
 
@@ -37,6 +41,10 @@ void loadMemory(char *inputPath, Cpu *cpu) {
 
 int mainloop(Cpu *cpu) {
   while(true){
+    if(cpu->pc == 0xF0F0){
+      //TODO exit
+    }
+
     uint8_t opcode = cpu->mem[cpu->pc];
     uint8_t firstField = (cpu->mem[cpu->pc+1]&0b11110000)>>4;
     uint8_t secondField = cpu->mem[cpu->pc+1]&0b00001111;
