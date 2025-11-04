@@ -6,7 +6,6 @@ int main(int argc, char *argv[]) {
         printf("Usage: %s <input_file>\n", argv[0]);
         return 1;
     }
-
     Cpu cpu;
     initcpu(&cpu);
     loadMemory(argv[1], &cpu);
