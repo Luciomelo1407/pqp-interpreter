@@ -66,6 +66,7 @@ int mainloop(Cpu *cpu) {
         return -1;
         break;
     }
+    cpu->pc+=4;
   }
   return 0;
 }
