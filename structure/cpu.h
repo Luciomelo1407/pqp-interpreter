@@ -6,11 +6,11 @@
 #define CPU_H
 
 typedef struct {
-    int16_t registers[16];
-    uint8_t mem[256];
+    int16_t* registers;
+    uint8_t* mem;
     bool g, l, e;
     int32_t pc;
-    int instructionsCounter[16];
+    int* instructionsCounter;
     FILE *output;
 } Cpu;
 
