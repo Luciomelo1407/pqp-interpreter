@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     Cpu cpu;
-    initcpu(&cpu);
+    initcpu(&cpu,argv[2]);
     loadMemory(argv[1], &cpu);
     mainloop(&cpu);
 
