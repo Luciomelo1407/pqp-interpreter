@@ -7,7 +7,7 @@
 
 typedef struct {
     int16_t registers[16];
-    uint8_t mem[100000];
+    uint8_t mem[256];
     bool g, l, e;
     int32_t pc;
     FILE *output;
