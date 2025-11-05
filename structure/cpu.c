@@ -12,7 +12,7 @@ void initcpu(Cpu *cpu, char* outputPath) {
   cpu->g = false;
   cpu->pc = 0;
   cpu->instructionsCounter = calloc(16, sizeof(int));
-  cpu->registers = calloc(16, sizeof(uint16_t));
+  cpu->registers = calloc(16, sizeof(uint32_t));
   cpu->mem = calloc(256, sizeof(uint8_t));
   cpu->output = fopen(outputPath, "w+");
 }
@@ -25,7 +25,7 @@ void loadMemory(char *inputPath, Cpu *cpu) {
   }
 
   int32_t counter = 0;
-  while (counter < 40000 && fscanf(input, "%hhx", &cpu->mem[counter]) == 1) {
+  while (counter < 256 && fscanf(input, "%hhx", &cpu->mem[counter]) == 1) {
     counter++;
   }
 
@@ -69,6 +69,18 @@ int mainloop(Cpu *cpu) {
         break;
       case 0x05:
         jmp(cpu,thirdField);
+        break;
+      case 0x06:
+        jmp_g(cpu,thirdField);
+        break;
+      case 0x07:
+        jmp_l(cpu,thirdField);
+        break;
+      case 0x08:
+        jmp_e(cpu,thirdField);
+        break;
+      case 0x0F:
+        sar(cpu, firstField, thirdField);
         break;
       default:
         return -1;
