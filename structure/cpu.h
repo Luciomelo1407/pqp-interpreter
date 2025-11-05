@@ -6,7 +6,7 @@
 #define CPU_H
 
 typedef struct {
-    int16_t* registers;
+    uint32_t* registers;
     uint8_t* mem;
     bool g, l, e;
     int32_t pc;
