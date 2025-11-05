@@ -56,6 +56,29 @@ void jmp_e(Cpu* cpu, uint16_t thirdField){
   else return;
 }
 
+void add(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+  uint32_t rx = cpu->registers[firstField], ry = cpu->registers[secondField];
+  cpu->registers[firstField] += cpu->registers[secondField];
+  fprintf(cpu->output,"0x%04X->ADD_R%d+=R%d=0x%08X+0x%08X=0x%08X", cpu->pc,firstField,secondField,rx,ry,cpu->registers[firstField]);
+  cpu->instructionsCounter[0x09]++;
+}
+
+void sub(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+  uint32_t rx = cpu->registers[firstField], ry = cpu->registers[secondField];
+  cpu->registers[firstField] -= cpu->registers[secondField];
+  fprintf(cpu->output,"0x%04X->SUB_R%d-=R%d=0x%08X-0x%08X=0x%08X", cpu->pc,firstField,secondField,rx,ry,cpu->registers[firstField]);
+  cpu->instructionsCounter[0x0A]++;
+}
+
+
+void aNd(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+  uint32_t rx = cpu->registers[firstField], ry = cpu->registers[secondField];
+  cpu->registers[firstField] = cpu->registers[firstField] & cpu->registers[secondField];
+  fprintf(cpu->output,"0x%04X->SUB_R%d&=R%d=0x%08X&0x%08X=0x%08X", cpu->pc,firstField,secondField,rx,ry,cpu->registers[firstField]);
+  cpu->instructionsCounter[0x0B]++;
+}
+
+
 void sar(Cpu* cpu,uint8_t firstField, uint16_t thirdField){
   int i = ((uint8_t)thirdField)>>4;
   uint32_t  before = cpu->registers[firstField];

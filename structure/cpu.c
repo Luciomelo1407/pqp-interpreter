@@ -79,6 +79,12 @@ int mainloop(Cpu *cpu) {
       case 0x08:
         jmp_e(cpu,thirdField);
         break;
+      case 0x09:
+        add(cpu,firstField,secondField);
+        break;
+      case 0x0A:
+        sub(cpu,firstField,secondField);
+        break;
       case 0x0F:
         sar(cpu, firstField, thirdField);
         break;
