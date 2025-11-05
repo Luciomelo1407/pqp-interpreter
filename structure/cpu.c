@@ -42,13 +42,13 @@ void loadMemory(char *inputPath, Cpu *cpu) {
 int mainloop(Cpu *cpu) {
   while(true){
     if(cpu->pc == 0xF0F0){
-      //TODO exit
+      return exit_setup(cpu);
     }
 
     uint8_t opcode = cpu->mem[cpu->pc];
     uint8_t firstField = (cpu->mem[cpu->pc+1]&0b11110000)>>4;
     uint8_t secondField = cpu->mem[cpu->pc+1]&0b00001111;
-    int16_t thirdField = ((int16_t)cpu->mem[cpu->pc+3]<<8) 
+    uint16_t thirdField = ((uint16_t)cpu->mem[cpu->pc+3]<<8) 
                         | ((uint16_t)cpu->mem[cpu->pc+2]);
 
     printf("opcode: 0x%02X\n",opcode);
