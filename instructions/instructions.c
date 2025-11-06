@@ -4,7 +4,7 @@
 
 
 void cmp(Cpu* cpu,uint8_t firstField, uint8_t secondField ){
-  cpu->e = true;
+  cpu->e = true;   // é tudo true msm?
   cpu->g = true;
   cpu->l = true;
   int rx = (int32_t)cpu->registers[firstField],
@@ -74,13 +74,13 @@ void sub(Cpu* cpu, uint8_t firstField, uint8_t secondField){
 void aNd(Cpu* cpu, uint8_t firstField, uint8_t secondField){
   uint32_t rx = cpu->registers[firstField], ry = cpu->registers[secondField];
   cpu->registers[firstField] = cpu->registers[firstField] & cpu->registers[secondField];
-  fprintf(cpu->output,"0x%04X->SUB_R%d&=R%d=0x%08X&0x%08X=0x%08X", cpu->pc,firstField,secondField,rx,ry,cpu->registers[firstField]);
+  fprintf(cpu->output,"0x%04X->AND_R%d&=R%d=0x%08X&0x%08X=0x%08X", cpu->pc,firstField,secondField,rx,ry,cpu->registers[firstField]);
   cpu->instructionsCounter[0x0B]++;
 }
 
 
-void sar(Cpu* cpu,uint8_t firstField, uint16_t thirdField){
-  int i = ((uint8_t)thirdField)>>4;
+void sar(Cpu* cpu, uint8_t firstField, uint16_t thirdField){
+  int i = ((uint8_t)thirdField)>>4;  
   uint32_t  before = cpu->registers[firstField];
   cpu->registers[firstField] = ((int32_t)cpu->registers[firstField])>>i;
   cpu->instructionsCounter[0x0F]++;
@@ -89,8 +89,31 @@ void sar(Cpu* cpu,uint8_t firstField, uint16_t thirdField){
 }
 
 
+void xOr(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+  uint32_t rx = cpu->registers[firstField], ry = cpu->registers[secondField];
+  cpu->registers[firstField] = cpu->registers[firstField] ^ cpu->registers[secondField];
+  fprintf(cpu->output,"0x%04X->XOR_R%d^=R%d=0x%08X^0x%08X=0x%08X\n", 
+          cpu->pc, firstField, secondField, rx, ry, cpu->registers[firstField]);
+  cpu->instructionsCounter[0x0D]++;
+}
+
+void oR(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+  uint32_t rx = cpu->registers[firstField], ry = cpu->registers[secondField];
+  cpu->registers[firstField] = cpu->registers[firstField] | cpu->registers[secondField];
+  fprintf(cpu->output,"0x%04X->OR_R%d|=R%d=0x%08X|0x%08X=0x%08X\n", 
+          cpu->pc, firstField, secondField, rx, ry, cpu->registers[firstField]);
+  cpu->instructionsCounter[0x0C]++;
+}
 
 
+void sal(Cpu* cpu, uint8_t firstField, uint16_t thirdField){
+  int i = ((uint8_t)thirdField)>>4 ;  // Extrai os 5 bits menos significativos - & 0x1F
+  uint32_t before = cpu->registers[firstField];
+  cpu->registers[firstField] = cpu->registers[firstField] << i;
+  cpu->instructionsCounter[0x0E]++;
+  fprintf(cpu->output,"0x%04X->SAL_R%d<<=%d=0x%08X<<%d=0x%08X\n", 
+          cpu->pc, firstField, i, before, i, cpu->registers[firstField]);
+}
 
 int exit_setup(Cpu* cpu){
   fprintf(cpu->output,"0x%04X->EXIT\n", cpu->pc);

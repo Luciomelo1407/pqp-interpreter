@@ -88,6 +88,15 @@ int mainloop(Cpu *cpu) {
       case 0x0F:
         sar(cpu, firstField, thirdField);
         break;
+      case 0x0E:
+        sal(cpu, firstField, thirdField);
+        break;
+      case 0x0D:
+        xOr(cpu, firstField, secondField);
+        break;
+      case 0x0C:
+        oR(cpu, firstField, secondField);
+        break;
       default:
         return -1;
         break;
