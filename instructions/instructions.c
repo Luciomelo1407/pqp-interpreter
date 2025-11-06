@@ -105,8 +105,8 @@ void jmp(Cpu* cpu, uint16_t thirdField){
 }
 
 void jmp_g(Cpu* cpu, uint16_t thirdField){
-  if(cpu->g && !(cpu->e) && !(cpu->l)){
-  fprintf(cpu->output,"0x%04X->JMP_0x%04X\n", cpu->pc,cpu->pc+thirdField+4);
+  if(cpu->g){
+  fprintf(cpu->output,"0x%04X->JG_0x%04X\n", cpu->pc,cpu->pc+thirdField+4);
   cpu->instructionsCounter[0x06]++;
   cpu->pc+=thirdField;
 }
@@ -114,8 +114,8 @@ void jmp_g(Cpu* cpu, uint16_t thirdField){
 }
 
 void jmp_l(Cpu* cpu, uint16_t thirdField){
-  if(cpu->l && !(cpu->g) && !(cpu->e)){
-  fprintf(cpu->output,"0x%04X->JMP_0x%04X\n", cpu->pc,cpu->pc+thirdField+4);
+  if(cpu->l){
+  fprintf(cpu->output,"0x%04X->JL_0x%04X\n", cpu->pc,cpu->pc+thirdField+4);
   cpu->instructionsCounter[0x07]++;
   cpu->pc+=thirdField;
 }
@@ -123,8 +123,8 @@ void jmp_l(Cpu* cpu, uint16_t thirdField){
 }
 
 void jmp_e(Cpu* cpu, uint16_t thirdField){
-  if(cpu->e && !(cpu->g) && !(cpu->l)){
-  fprintf(cpu->output,"0x%04X->JMP_0x%04X\n", cpu->pc,cpu->pc+thirdField+4);
+  if(cpu->e){
+  fprintf(cpu->output,"0x%04X->JE_0x%04X\n", cpu->pc,cpu->pc+thirdField+4);
   cpu->instructionsCounter[0x08]++;
   cpu->pc+=thirdField;
 }
