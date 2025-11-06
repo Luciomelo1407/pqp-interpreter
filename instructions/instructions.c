@@ -2,6 +2,81 @@
 #include <stdint.h>
 #include <stdio.h>
 
+void mov02(Cpu *cpu, uint8_t firstField, uint8_t secondField) {
+  cpu->registers[firstField] =
+      ((uint32_t)cpu->mem[cpu->registers[secondField] + 3]) << 24 |
+      ((uint32_t)cpu->mem[cpu->registers[secondField] + 2]) << 16 |
+      ((uint32_t)cpu->mem[cpu->registers[secondField] + 1]) << 8 |
+      ((uint32_t)cpu->mem[cpu->registers[secondField]]);
+  fprintf(cpu->output,
+          "0x%04X->MOV_R%d=MEM[0x%02X,0x%02X,0x%02X,0x%02X]=[0x%02X,0x%02X,0x%"
+          "02X,0x%02X]\n",
+          cpu->pc, firstField, cpu->registers[secondField],
+          cpu->registers[secondField] + 1, cpu->registers[secondField] + 2,
+          cpu->registers[secondField] + 3,
+          cpu->mem[cpu->registers[secondField]],
+          cpu->mem[cpu->registers[secondField] + 1],
+          cpu->mem[cpu->registers[secondField] + 2],
+          cpu->mem[cpu->registers[secondField] + 3]);
+  cpu->instructionsCounter[0x02]++;
+}
+
+  void mov00(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+    uint8_t highByte = cpu->mem[cpu->pc +2];
+    uint8_t lowByte = cpu->mem[cpu->pc +3];
+    uint16_t i16 = ((uint16_t)highByte << 8) | lowByte;
+    uint16_t signed_i16 = (int16_t)i16;
+    cpu->registers[firstField] = (uint32_t)signed_i16;
+
+    fprintf(cpu ->output, 
+        "ox%o4X->MOV_R%d=0x%08X\n",
+        cpu->pc,
+        firstField,
+        cpu->registers[firstField]);
+        cpu->instructionsCounter[0x00]++;
+  }
+
+  void mov01(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+      uint32_t valorOrigem = cpu->registers[secondField];
+      cpu->registers[firstField] = valorOrigem;
+      fprintf(cpu->output,
+          "0x%04X->MOV_R%d=0x%08X\n",
+          cpu->pc,
+          firstField,
+          secondField,
+          valorOrigem); 
+        cpu->instructionsCounter[0x01]++;
+    }
+
+  void mov03(Cpu* cpu, uint8_t firstField, uint8_t secondField){
+    uint32_t endereco = cpu->registers[firstField];
+    uint32_t valor = cpu->registers[secondField];
+    uint8_t byte0_lsb = (valor >> 0) & 0xFF;
+    uint8_t byte1 = (valor >> 8) & 0xFF;
+    uint8_t byte2 = (valor >>16) & 0xFF;
+    uint8_t byte3_msb = (valor >> 24) & 0xFF;
+
+    cpu->mem[endereco + 0] = byte0_lsb;
+    cpu->mem[endereco + 1] = byte1;
+    cpu->mem[endereco + 2] = byte2;
+    cpu->mem[endereco + 3] = byte3_msb;
+
+    fprintf(
+      cpu->output,
+      "0x%04X->MOV_MEM[0x%02X,0x%02X,0x%02X,0x%02X]=R%d=[0x%02X,%0x2X,%0x2X,%0x2X]\n",
+      cpu->pc,
+      endereco + 1,
+      endereco + 2,
+      endereco + 3,
+      secondField,
+      byte0_lsb,
+      byte1,
+      byte2,
+      byte3_msb
+    );
+    cpu->instructionsCounter[0x03]++;
+  }
+
 
 void cmp(Cpu* cpu,uint8_t firstField, uint8_t secondField ){
   cpu->e = true;
