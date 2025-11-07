@@ -16,6 +16,11 @@ void initcpu(Cpu *cpu, char *outputPath) {
   cpu->registers = calloc(16, sizeof(uint32_t));
   cpu->mem = calloc(256, sizeof(uint8_t));
   cpu->output = fopen(outputPath, "w+");
+  cpu->duplicateCounter = calloc(16, sizeof(uint32_t));
+  cpu->duplicate = calloc(16, sizeof(int *));
+  for (int i = 0; i < 16; i++) {
+    cpu->duplicate[i] = calloc(500000, sizeof(int));
+  }
 }
 
 void loadMemory(char *inputPath, Cpu *cpu) {
@@ -42,7 +47,7 @@ void loadMemory(char *inputPath, Cpu *cpu) {
 
 int mainloop(Cpu *cpu) {
   int counter = 0;
-  while (counter < 100) {
+  while (true) {
     if (cpu->pc == 0xF0F0) {
       return exit_setup(cpu);
     }

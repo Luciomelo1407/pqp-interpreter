@@ -11,6 +11,8 @@ typedef struct {
     bool g, l, e;
     int32_t pc;
     int* instructionsCounter;
+    int* duplicateCounter;
+    int** duplicate;
     FILE *output;
 } Cpu;
 
