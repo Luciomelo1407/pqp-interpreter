@@ -19,7 +19,7 @@ void initcpu(Cpu *cpu, char *outputPath) {
   cpu->duplicateCounter = calloc(16, sizeof(uint32_t));
   cpu->duplicate = calloc(16, sizeof(int *));
   for (int i = 0; i < 16; i++) {
-    cpu->duplicate[i] = calloc(500000, sizeof(int));
+    cpu->duplicate[i] = calloc(1000, sizeof(int));
   }
 }
 
@@ -37,6 +37,8 @@ void loadMemory(char *inputPath, Cpu *cpu) {
 
   printf("Loaded %d bytes into memory.\n", counter);
   for (int i = 0; i < counter; i++) {
+    if ((i) % 4 == 0)
+      printf("0x%04X->", i);
     printf("0x%02X ", cpu->mem[i]);
     if ((i + 1) % 4 == 0)
       printf("\n");
@@ -63,7 +65,7 @@ int mainloop(Cpu *cpu) {
     // printf("firstField: 0x%X\n", firstField);
     // printf("secondField: 0x%X\n", secondField);
     // printf("thirdField: 0x%04X\n", thirdField);
-    // printf("\nDEBUG: PC = 0x%X, %d\n", cpu->pc, cpu->pc);
+    // printf("DEBUG: PC = 0x%X, %d\n", cpu->pc, cpu->pc);
 
     switch (opcode) {
     case 0x00:
@@ -115,7 +117,7 @@ int mainloop(Cpu *cpu) {
       sar(cpu, firstField, thirdField);
       break;
     default:
-      printf("\n\nNAO ACHOU A INSTRUÇÀO\n\n");
+      printf("\n\nNAO ACHOU A INSTRUÇÀO %d\n\n", opcode);
       return -1;
       break;
     }
