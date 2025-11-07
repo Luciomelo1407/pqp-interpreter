@@ -28,5 +28,9 @@ void xOr(Cpu* cpu,uint8_t firstField, uint8_t secondField);
 void sal(Cpu* cpu,uint8_t firstField, uint16_t thirdField);
 void sar(Cpu* cpu,uint8_t firstField, uint16_t thirdField);
 int exit_setup(Cpu* cpu);
+void mov02(Cpu* cpu, uint8_t firstField, uint8_t secondField);
+void mov00(Cpu* cpu, uint8_t firstField, uint8_t secondField);
+void mov01(Cpu* cpu, uint8_t firstField, uint8_t secondField);
+void mov03(Cpu* cpu, uint8_t firstField, uint8_t secondField);
 
 #endif
